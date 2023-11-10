@@ -17,6 +17,9 @@ start_cluster() {
 
     echo -e "${GREEN}Starting Kafka brokers for $PROJECT_NAME...${NC}"
     docker-compose -p $PROJECT_NAME up -d kafka1 kafka2 kafka3
+    
+    echo -e "${GREEN}Starting Kafka UI for $PROJECT_NAME...${NC}"
+    docker-compose -p $PROJECT_NAME up -d kafka-ui
 
     echo -e "${GREEN}Kafka cluster started successfully.${NC}"
 }
@@ -39,6 +42,7 @@ restart_cluster() {
     echo -e "${RED}Removing persistent data volumes for $PROJECT_NAME...${NC}"
     docker volume rm ${PROJECT_NAME}_kafka1 ${PROJECT_NAME}_kafka2 ${PROJECT_NAME}_kafka3
     docker volume rm ${PROJECT_NAME}_zookeeper
+    docker volume rm ${PROJECT_NAME}_kafka-ui
 
     # Starting the cluster
     start_cluster

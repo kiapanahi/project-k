@@ -11,6 +11,9 @@ function Start-Cluster {
     Write-Host ("Starting Kafka brokers for {0}..." -f $ProjectName) -ForegroundColor Green
     docker-compose -p $ProjectName up -d kafka1 kafka2 kafka3
 
+    Write-Host ("Starting Kafka UI for {0}..." -f $ProjectName) -ForegroundColor Green
+    docker-compose -p $ProjectName up -d kafka-ui
+
     Write-Host "Kafka cluster started successfully." -ForegroundColor Green
 }
 
@@ -32,6 +35,7 @@ function Restart-Cluster {
     Write-Host ("Removing persistent data volumes for {0}..." -f $ProjectName) -ForegroundColor Red
     docker volume rm "${ProjectName}_kafka1", "${ProjectName}_kafka2", "${ProjectName}_kafka3"
     docker volume rm "${ProjectName}_zookeeper"
+    docker volume rm "${ProjectName}_kafka-ui"
 
     # Starting the cluster
     Start-Cluster

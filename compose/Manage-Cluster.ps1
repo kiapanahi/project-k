@@ -3,7 +3,7 @@ param (
     [string]$Action
 )
 
-# Function to start the Kafka cluster
+# Function to start the Kafka cluster, Schema Registry, and Kafka UI
 function Start-Cluster {
     Write-Host ("Starting Zookeeper for {0}..." -f $ProjectName) -ForegroundColor Green
     docker-compose -p $ProjectName up -d zookeeper
@@ -11,36 +11,38 @@ function Start-Cluster {
     Write-Host ("Starting Kafka brokers for {0}..." -f $ProjectName) -ForegroundColor Green
     docker-compose -p $ProjectName up -d kafka1 kafka2 kafka3
 
+    Write-Host ("Starting Schema Registry for {0}..." -f $ProjectName) -ForegroundColor Green
+    docker-compose -p $ProjectName up -d schema-registry
+
     Write-Host ("Starting Kafka UI for {0}..." -f $ProjectName) -ForegroundColor Green
     docker-compose -p $ProjectName up -d kafka-ui
 
-    Write-Host "Kafka cluster started successfully." -ForegroundColor Green
+    Write-Host "Kafka cluster, Schema Registry, and Kafka UI started successfully." -ForegroundColor Green
 }
 
-# Function to stop the Kafka cluster
+# Function to stop the Kafka cluster, Schema Registry, and Kafka UI
 function Stop-Cluster {
-    Write-Host ("Stopping Kafka cluster for {0}..." -f $ProjectName) -ForegroundColor Red
+    Write-Host ("Stopping Kafka cluster, Schema Registry, and Kafka UI for {0}..." -f $ProjectName) -ForegroundColor Red
     docker-compose -p $ProjectName down
-    Write-Host "Kafka cluster stopped." -ForegroundColor Red
+    Write-Host "Kafka cluster, Schema Registry, and Kafka UI stopped." -ForegroundColor Red
 }
 
-# Function to restart the Kafka cluster
+# Function to restart the Kafka cluster, Schema Registry, and Kafka UI
 function Restart-Cluster {
-    Write-Host ("Restarting Kafka cluster for {0}..." -f $ProjectName) -ForegroundColor Red
+    Write-Host ("Restarting Kafka cluster, Schema Registry, and Kafka UI for {0}..." -f $ProjectName) -ForegroundColor Red
 
     # Stopping the cluster
     Stop-Cluster
 
     # Removing persistent data volumes
     Write-Host ("Removing persistent data volumes for {0}..." -f $ProjectName) -ForegroundColor Red
-    docker volume rm "${ProjectName}_kafka1", "${ProjectName}_kafka2", "${ProjectName}_kafka3"
+    docker volume rm "${ProjectName}_kafka1", "${ProjectName}_kafka2", "${ProjectName}_kafka3", "${ProjectName}_schema-registry", "${ProjectName}_kafka-ui"
     docker volume rm "${ProjectName}_zookeeper"
-    docker volume rm "${ProjectName}_kafka-ui"
 
-    # Starting the cluster
+    # Starting the cluster, Schema Registry, and Kafka UI
     Start-Cluster
 
-    Write-Host "Kafka cluster restarted successfully." -ForegroundColor Red
+    Write-Host "Kafka cluster, Schema Registry, and Kafka UI restarted successfully." -ForegroundColor Red
 }
 
 # Parse the command-line arguments

@@ -2,10 +2,11 @@ auth:
   type: DISABLED
 kafka:
   clusters:
-    - bootstrapServers: kafka1:29092,kafka2:29093,kafka3:29094
-      name: dev
-      properties: {}
-      readOnly: false
+  - bootstrapServers: kafka1:29092,kafka2:29093,kafka3:29094
+    name: dev
+    properties: {}
+    readOnly: false
+    schemaRegistry: http://schema-registry:8081
 rbac:
   roles: []
 webclient: {}

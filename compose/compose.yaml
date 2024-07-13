@@ -63,7 +63,6 @@ services:
       - kafka3
 
   kafka-ui:
-    container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
       - 8080:8080

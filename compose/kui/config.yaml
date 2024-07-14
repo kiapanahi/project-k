@@ -1,0 +1,20 @@
+auth:
+  type: DISABLED
+kafka:
+  clusters:
+  - bootstrapServers: kafka1:29092,kafka2:29093,kafka3:29094
+    name: local
+    properties: {}
+    readOnly: false
+    schemaRegistry: http://schema-registry:8081
+  - bootstrapServers: 10.41.31.1:9092,10.41.31.2:9092,10.41.31.3:9092
+    name: Prod
+    properties: {}
+    readOnly: true
+  - bootstrapServers: 10.21.62.103:9092,10.21.62.104:9092,10.21.62.105:9092
+    name: Stage
+    properties: {}
+    readOnly: true
+rbac:
+  roles: []
+webclient: {}
